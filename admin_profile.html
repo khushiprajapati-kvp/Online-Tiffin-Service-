@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Profile</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f6f9; /* same light bg */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    width:350px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1); /* softer shadow */
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ddd;
+    color:#333;
+}
+
+input:focus{
+    outline:none;
+    border-color:#ff6b00; /* orange focus */
+    box-shadow:0 0 5px rgba(255,107,0,0.3);
+}
+
+input[readonly]{
+    background:#f1f1f1;
+}
+
+.btn{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:5px;
+    background:#28a745; /* green button */
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#218838;
+}
+
+.back-btn{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    padding:10px;
+    background:#1e1e1e; /* sidebar dark */
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+
+input[type="checkbox"]{
+    width:auto;
+    margin:0;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Admin Profile</h2>
+
+<form method="POST" action="{{ url_for('update_admin_profile') }}">
+
+    <input type="text" name="name" value="{{ admin.name }}" readonly>
+
+    <input type="email" name="email" value="{{ admin.email }}">
+    
+    <input type="password" id="password" name="password" value="{{ admin.password }}">
+
+    <label style="display:flex; align-items:center; gap:6px;">
+        <input type="checkbox" onclick="togglePassword()"> Show Password
+    </label>
+<br>
+    <button type="submit" class="btn">Update</button>
+
+</form>
+
+<a href="{{ url_for('admin_dashboard') }}" class="back-btn">Back to Dashboard</a>
+
+</div>
+
+<script>
+function togglePassword() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
+
+</body>
+</html>

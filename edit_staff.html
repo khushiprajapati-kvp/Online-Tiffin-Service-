@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Staff</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+}
+
+.container{
+    width:40%;
+    margin:50px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    color:#333;
+    text-align:center;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:5px;
+    color:#333;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:#ff6b00;
+    box-shadow:0 0 5px rgba(255,107,0,0.3);
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#218838;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Edit Staff</h2>
+
+<form method="POST">
+
+<input type="text" name="name" value="{{ staff.s_name }}" placeholder="Name" required>
+<input type="email" name="email" value="{{ staff.s_email }}" placeholder="Email" required>
+<input type="text" name="phone" value="{{ staff.s_phone }}" placeholder="Phone" required>
+
+<!-- ✅ FIXED ROLE DROPDOWN -->
+<select name="role" required>
+    <option value="Delivery Staff" {% if staff.s_role == 'Delivery Staff' %}selected{% endif %}>Delivery Staff</option>
+    <option value="Chef" {% if staff.s_role == 'Chef' %}selected{% endif %}>Chef</option>
+    <option value="Manager" {% if staff.s_role == 'Manager' %}selected{% endif %}>Manager</option>
+    <option value="Tiffin Packer" {% if staff.s_role == 'Tiffin Packer' %}selected{% endif %}>Tiffin Packer</option>
+</select>
+
+<button type="submit">Update Staff</button>
+
+<center><a href="/view_staff" class="back-btn">Back to Staff</a></center>
+
+</form>
+
+</div>
+
+</body>
+</html>

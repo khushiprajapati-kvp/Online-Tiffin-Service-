@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background: linear-gradient(to right, #1e1e2f, #2c2c54);
+    min-height:100vh;
+    color:white;
+}
+
+h1{
+    text-align:center;
+    color:#ff7a18;
+    margin-top:30px;
+}
+
+.nav-buttons{
+    margin:20px 0;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+}
+
+.nav-buttons a{
+    text-decoration:none;
+    padding:10px 20px;
+    border-radius:25px;
+    font-weight:500;
+    color:#fff;
+    transition:0.3s;
+}
+
+.home-btn{
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+}
+
+.home-btn:hover{
+    transform: scale(1.05);
+    opacity:0.9;
+}
+
+table{
+    border-collapse:collapse;
+    width:90%;
+    margin:30px auto;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px);
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.5);
+}
+
+th{
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color:#fff;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+tr:hover{
+    background: rgba(255,255,255,0.1);
+}
+
+.rate-btn, .invoice-btn{
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    text-decoration:none;
+    font-size:14px;
+    margin-right:5px;
+    transition:0.3s;
+}
+
+.rate-btn:hover, .invoice-btn:hover{
+    transform: scale(1.05);
+    opacity:0.9;
+}
+
+.cancel-btn{
+    background:#dc3545;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    border:none;
+    font-size:14px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-right:5px;
+}
+
+.cancel-btn:hover{
+    opacity:0.8;
+}
+
+.status-pending{ color:orange; font-weight:bold; }
+.status-accepted{ color:#17a2b8; font-weight:bold; }
+.status-out{ color:#ffc107; font-weight:bold; }
+.status-delivered{ color:#28a745; font-weight:bold; }
+.status-rejected{ color:#dc3545; font-weight:bold; }
+
+</style>
+
+<body>
+
+<h1>My Orders</h1>
+
+<div class="nav-buttons">
+    <a href="{{ url_for('home') }}" class="home-btn">Back to Home</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            
+            <!-- ❌ User Name removed -->
+            <th>Menu Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Booking Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for order in orders %}
+        <tr>
+
+            <td>{{ order.menu_name }}</td>
+            <td>₹{{ order.price }}</td>
+            <td>{{ order.quantity }}</td> 
+
+            <td>
+                {% if order.status == 'Pending' %}
+                    <span class="status-pending">⏳ Pending</span>
+                {% elif order.status == 'Accepted' %}
+                    <span class="status-accepted">✔ Accepted</span>
+                {% elif order.status == 'Out for Delivery' %}
+                    <span class="status-out">🚚 Out for Delivery</span>
+                {% elif order.status == 'Delivered' %}
+                    <span class="status-delivered">✅ Delivered</span>
+                {% elif order.status == 'Rejected' %}
+                    <span class="status-rejected">❌ Rejected</span>
+                {% else %}
+                    {{ order.status }}
+                {% endif %}
+            </td>
+
+            <td>{{ order.booking_date }}</td>
+
+            <td>
+
+                {% if order.status == 'Pending' %}
+                    <form method="POST" action="{{ url_for('cancel_order', order_id=order.id) }}" style="display:inline;">
+                        <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure to cancel?')">
+                            Cancel
+                        </button>
+                    </form>
+
+                {% elif order.status == 'Accepted' or order.status == 'Out for Delivery' %}
+                    <span style="color:#ccc;">Cannot cancel</span>
+                {% endif %}
+
+                {% if order.status == 'Delivered' %}
+                    <a href="{{ url_for('rate_order', order_id=order.id) }}" class="rate-btn">Rate</a>
+                {% else %}
+                    <span style="color:#ccc;">Rate after delivery</span>
+                {% endif %}
+
+                <a href="{{ url_for('invoice', order_id=order.id) }}" class="invoice-btn">Invoice</a>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

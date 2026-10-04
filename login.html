@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OTS - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(to right, #1e1e2f, #2c2c54);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        padding: 40px 50px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        width: 400px;
+        color: white;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ff7a18;
+        font-size: 28px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #ddd;
+    }
+
+    input[type="email"], 
+    input[type="password"],
+    input[type="text"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.2);
+        color: white;
+        transition: 0.3s;
+    }
+
+    input::placeholder {
+        color: #ccc;
+    }
+
+    input:focus {
+        outline: none;
+        box-shadow: 0 0 8px rgba(255,122,24,0.5);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(45deg, #ff7a18, #ffb347);
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+    .register-link {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #ccc;
+    }
+
+    .register-link a {
+        color: #ffb347;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* 🔥 FLASH MESSAGE STYLE */
+    .flash-message {
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .error {
+        background: rgba(255, 0, 0, 0.2);
+        color: #ff4d4d;
+    }
+
+    .success {
+        background: rgba(0, 255, 0, 0.2);
+        color: #00e676;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+
+        <!-- ✅ FLASH MESSAGE SHOW HERE -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label>Email:</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label>Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <label style="display:flex; align-items:center; gap:6px; margin-top:-10px; margin-bottom:15px;">
+                <input type="checkbox" onclick="togglePassword()">
+                Show Password
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="register-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+
+</body>
+</html>

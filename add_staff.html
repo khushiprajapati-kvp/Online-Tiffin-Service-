@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Staff</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:white;
+padding:30px;
+border-radius:10px;
+width:350px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+input, select{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Add Staff</h2>
+
+<form method="POST">
+
+<input type="text" name="name" placeholder="Staff Name" required>
+
+<input type="email" name="email" placeholder="Email" required>
+
+<input type="text" name="phone" placeholder="Phone" required>
+
+<!-- ✅ FIXED ROLE -->
+<select name="role" required>
+    <option value="">Select Role</option>
+    <option value="Delivery Staff">Delivery Staff</option>  <!-- 🔥 FIX -->
+    <option value="Chef">Chef</option>
+    <option value="Manager">Manager</option>
+    <option value="Tiffin Packer">Tiffin Packer</option>
+</select>
+
+<button type="submit">Add Staff</button>
+
+</form>
+
+<center><a href="/view_staff" class="back-btn">Back to Staff</a></center>
+
+</div>
+
+</body>
+</html>

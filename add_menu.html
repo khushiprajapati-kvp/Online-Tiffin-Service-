@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Menu</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    width:350px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+    font-size:14px;
+    font-family:Arial;
+}
+
+textarea{
+    resize: vertical; /* user can adjust height if needed */
+    min-height:40px;  /* minimum height same as input */
+    max-height:150px; /* optional max height */
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#218838;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 15px;
+    background:#1e1e1e; 
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Add Menu</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+<input type="text" name="name" placeholder="Dish Name" required>
+
+<textarea name="description" placeholder="Dish Description" required></textarea>
+
+<input type="number" name="price" placeholder="Price" required>
+
+<input type="file" name="image" required>
+
+<button type="submit">Add Menu</button>
+
+</form>
+<center><a href="/view_menu" class="back-btn">Back to Menu</a></center>
+
+</div>
+
+</body>
+</html>

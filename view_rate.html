@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Ratings</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    width:80%;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* NEW HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+h2{
+    color:#333;
+    margin:0;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#ff6b00;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+    color:#333;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+    padding: 6px 12px;
+    background: #dc3545;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-left: 5px;
+    transition: 0.3s;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover{
+    background:#c82333;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h2>All Ratings</h2>
+    <a href="/admin_dashboard" class="back-btn">Back to Dashboard</a>
+</div>
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Rating</th>
+    <th>Comment</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for rating in ratings %}
+
+<tr>
+    <td>{{ rating.id }}</td>
+    <td>{{ rating.user_name }}</td>
+    <td>{{ rating.rate }}</td>
+    <td>{{ rating.comment }}</td>
+    <td>{{ rating.rating_date }}</td>
+    <td>
+        <form action="{{ url_for('delete_rating', rating_id=rating.id) }}" method="POST" style="display:inline-block;">
+    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this rating?')">Delete</button>
+</form>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+</div>
+
+</body>
+</html>

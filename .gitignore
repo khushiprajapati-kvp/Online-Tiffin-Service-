@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Local application and editor files
+instance/
+.vscode/
+.idea/
+*.log
+Documentation/ots documentation.docx
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

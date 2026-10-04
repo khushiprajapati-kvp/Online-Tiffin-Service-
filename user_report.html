@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Report</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    width:80%;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+h2{
+    margin:0;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+
+/* FILTER BOX */
+.filter-box{
+    margin-bottom:20px;
+}
+
+.filter-box input{
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-right:10px;
+}
+
+/* BUTTON */
+.btn{
+    padding:8px 15px;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#e65c00;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#ff6b00;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+    color:#333;
+}
+</style>
+
+<script>
+function printTable() {
+    var divToPrint = document.getElementById('reportTable');
+    var newWin = window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+    <h2>👥 User Report</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-btn">Back to Dashboard</a>
+</div>
+
+<!-- FILTER -->
+<form method="post" class="filter-box">
+
+    <input type="date" name="start_date" value="{{ request.form.start_date }}">
+    <input type="date" name="end_date" value="{{ request.form.end_date }}">
+
+    <button type="submit" class="btn">Generate</button>
+    <button type="button" class="btn" onclick="printTable()">Print</button>
+
+</form>
+
+<!-- TABLE -->
+<div id="reportTable">
+<table>
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Contact</th>
+    <th>Address</th>
+    <th>Created Date</th>
+</tr>
+
+{% for u in users %}
+<tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.name }}</td>
+    <td>{{ u.email }}</td>
+    <td>{{ u.contact }}</td>
+    <td>{{ u.address }}</td>
+    <td>{{ u.created_at }}</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</div>
+
+</body>
+</html>

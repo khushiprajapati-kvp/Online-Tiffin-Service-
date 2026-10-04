@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Staff</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    width:80%;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    color:#333;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#ff6b00;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+    color:#333;
+}
+
+/* ✅ ROLE COLORS UPDATED */
+.role-admin{
+    color:#007bff;
+    font-weight:bold;
+}
+
+.role-delivery{
+    color:#28a745;
+    font-weight:bold;
+}
+
+.role-other{
+    color:#6c757d;
+    font-weight:bold;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:15px;
+}
+
+.add-btn{
+    padding:10px 18px;
+    background:#28a745;
+    color:white;
+    border-radius:25px;
+    font-weight:bold;
+    text-decoration: none;
+}
+
+.add-btn:hover{
+    background:#218838;
+}
+
+.edit-btn{
+    padding:6px 12px;
+    background:#ff6b00;
+    color:white;
+    border-radius:5px;
+    font-size:14px;
+    transition:0.3s;
+    text-decoration: none;
+}
+
+.edit-btn:hover{
+    background:#e65c00;
+}
+
+.delete-btn{
+    padding:6px 12px;
+    background:#dc3545;
+    color:white;
+    border-radius:5px;
+    font-size:14px;
+    margin-left:5px;
+    transition:0.3s;
+    text-decoration: none;
+}
+
+.delete-btn:hover{
+    background:#c82333;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Staff List</h2>
+
+<div class="top-bar">
+    <a href="/add_staff" class="add-btn">+ Add Staff</a>
+</div>
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Role</th>
+    <th>Action</th>
+</tr>
+
+{% for s in staff %}
+
+<tr>
+    <td>{{ s.s_id }}</td>
+    <td>{{ s.s_name }}</td>
+    <td>{{ s.s_email }}</td>
+    <td>{{ s.s_phone }}</td>
+
+    <!-- ✅ ROLE CLEAN FIX -->
+    <td>
+        {% if s.s_role == 'Admin' %}
+            <span class="role-admin">Admin</span>
+        {% elif s.s_role == 'Delivery Staff' %}
+            <span class="role-delivery">Delivery Staff</span>
+        {% else %}
+            <span class="role-other">{{ s.s_role }}</span>
+        {% endif %}
+    </td>
+
+    <td>
+        <a href="/edit_staff/{{ s.s_id }}" class="edit-btn">Edit</a>
+        <a href="/delete_staff/{{ s.s_id }}" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="/admin_dashboard" class="back-btn">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OTS - Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h2 {
+            color: #ff5722;
+            margin-bottom: 25px;
+        }
+        input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 10px;
+    margin: 8px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+        button {
+            width: 100%;
+            background-color: #ff5722;
+            color: white;
+            padding: 12px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e64a19;
+        }
+        a {
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Login</h2>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div style="color:red; margin-bottom:15px;">
+                {% for msg in messages %}
+                    <p>{{ msg }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+        <form method="POST">
+            <input type="email" name="email" placeholder="Admin Email" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <label style="display:flex; align-items:center; gap:6px; margin:10px 0 15px 0;">
+    <input type="checkbox" onclick="togglePassword()">
+    Show Password
+</label>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    
+    <script>
+function togglePassword() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
+
+</body>
+</html>

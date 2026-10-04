@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Profile</title>
+
+<style>
+/* Reset */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Dark Background + Center Form */
+body{
+    background: linear-gradient(to right, #1e1e2f, #2c2c54);
+    min-height: 100vh;
+    color: white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* Glass Container */
+.container{
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 95vh;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+/* Heading */
+h2{
+    text-align:center;
+    margin-bottom:15px;
+    color:#ff7a18;
+    font-size:20px;
+}
+
+/* Labels */
+label{
+    display:block;
+    margin-bottom:3px;
+    color:#ddd;
+    font-size:13px;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    padding:8px;
+    margin-bottom:8px;
+    border-radius:8px;
+    border:none;
+    background: rgba(255,255,255,0.2);
+    color:white;
+    font-size:13px;
+}
+
+input::placeholder{
+    color:#ccc;
+}
+
+input:focus{
+    outline:none;
+    box-shadow:0 0 8px rgba(255,122,24,0.5);
+}
+
+input[readonly]{
+    background: rgba(255,255,255,0.1);
+    color:#aaa;
+}
+
+/* Show Password */
+.show-pass{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.show-pass input{
+    width:auto;
+}
+
+/* Address Grid */
+.address-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.full{
+    grid-column: span 2;
+}
+
+/* Buttons */
+button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:25px;
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color:white;
+    font-size:14px;
+    cursor:pointer;
+    text-align:center;
+    margin-top:12px; /* spacing for Update button */
+    transition:0.3s;
+}
+
+.back-btn{
+    display:block;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:25px;
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color:white;
+    font-size:14px;
+    text-align:center;
+    text-decoration:none;
+    margin-top:10px; /* spacing between Update & Back button */
+    transition:0.3s;
+}
+
+button:hover, .back-btn:hover{
+    transform: scale(1.05);
+    opacity:0.9;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>User Profile</h2>
+
+<form method="POST" action="{{ url_for('update_profile') }}">
+
+    <label>Name</label>
+    <input type="text" name="name" value="{{ user.name }}" readonly>
+
+    <label>Email</label>
+    <input type="email" name="email" value="{{ user.email }}">
+
+    <label>Password</label>
+    <input type="password" id="password" name="password" value="{{ user.password }}">
+
+    <div class="show-pass">
+        <input type="checkbox" onclick="togglePassword()"> Show Password
+    </div>
+
+    <label>Contact</label>
+    <input type="text" name="contact" value="{{ user.contact }}">
+
+    <div class="address-grid">
+        <div>
+            <label>House No</label>
+            <input type="text" name="house_no" value="{{ user.house_no }}">
+        </div>
+        <div>
+            <label>Street</label>
+            <input type="text" name="street" value="{{ user.street }}">
+        </div>
+        <div class="full">
+            <label>Area</label>
+            <input type="text" name="area" value="{{ user.area }}">
+        </div>
+        <div>
+            <label>City</label>
+            <input type="text" name="city" value="{{ user.city }}">
+        </div>
+        <div>
+            <label>Pincode</label>
+            <input type="text" name="pincode" value="{{ user.pincode }}">
+        </div>
+    </div>
+
+    <button type="submit">Update</button>
+
+</form>
+
+<a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
+
+</div>
+
+<script>
+function togglePassword() {
+    var x = document.getElementById("password");
+    x.type = (x.type === "password") ? "text" : "password";
+}
+</script>
+
+</body>
+</html>

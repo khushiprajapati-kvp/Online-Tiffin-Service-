@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Booking Report</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    width:80%;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+h2{
+    margin:0;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    padding:10px 15px;
+    background:#1e1e1e;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.back-btn:hover{
+    background:#000;
+}
+
+/* FILTER BOX */
+.filter-box{
+    margin-bottom:20px;
+}
+
+.filter-box input,
+.filter-box select{
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-right:10px;
+}
+
+/* BUTTON */
+.btn{
+    padding:8px 15px;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#e65c00;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#ff6b00;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+    color:#333;
+}
+
+/* STATUS BADGES */
+.status{
+    padding:5px 10px;
+    border-radius:5px;
+    color:white;
+}
+
+.Pending { background: orange; }
+.Accepted { background: blue; }
+.OutforDelivery { background: purple; }
+.Delivered { background: green; }
+.Rejected { background: red; }
+
+</style>
+
+<script>
+function printTable() {
+    var divToPrint = document.getElementById('reportTable');
+    var newWin = window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+    <h2>📦 Booking Report</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-btn">Back to Dashboard</a>
+</div>
+
+<!-- FILTER -->
+<form method="post" class="filter-box">
+
+    <input type="date" name="start_date" value="{{ request.form.start_date }}">
+    <input type="date" name="end_date" value="{{ request.form.end_date }}">
+
+    <select name="status">
+        <option value="">All Status</option>
+        <option value="Pending" {% if request.form.status=='Pending' %}selected{% endif %}>Pending</option>
+        <option value="Accepted" {% if request.form.status=='Accepted' %}selected{% endif %}>Accepted</option>
+        <option value="Out for Delivery" {% if request.form.status=='Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+        <option value="Delivered" {% if request.form.status=='Delivered' %}selected{% endif %}>Delivered</option>
+        <option value="Rejected" {% if request.form.status=='Rejected' %}selected{% endif %}>Rejected</option>
+    </select>
+
+    <button type="submit" class="btn">Generate</button>
+    <button type="button" class="btn" onclick="printTable()">Print</button>
+
+</form>
+
+<!-- TABLE -->
+<div id="reportTable">
+<table>
+<tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Dish</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Status</th>
+    <th>Date</th>
+</tr>
+
+{% for o in orders %}
+<tr>
+    <td>{{ o.id }}</td>
+    <td>{{ o.user_name }}</td>
+    <td>{{ o.dish }}</td>
+    <td>₹{{ o.price }}</td>
+    <td>{{ o.quantity }}</td>
+    <td>
+        <span class="status {{ o.status.replace(' ', '') }}">
+            {{ o.status }}
+        </span>
+    </td>
+    <td>{{ o.booking_date }}</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</div>
+
+</body>
+</html>

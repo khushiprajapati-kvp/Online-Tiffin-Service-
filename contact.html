@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - OTS</title>
+    <style>
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Dark Background */
+body {
+    background: linear-gradient(to right, #1e1e2f, #2c2c54);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+}
+
+/* Glass Container */
+.contact-container, .message-sent {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 15px;
+    width: 450px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* Heading */
+h1, h2 {
+    color: #ff7a18;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px 0;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+    color: #ccc;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Buttons */
+button, .back-btn {
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+button:hover, .back-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Message text */
+.message-sent p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+/* Back button small text */
+.back-btn {
+    font-size: 14px;
+}
+
+</style>
+</head>
+<body>
+    {% if message_sent %}
+        <div class="message-sent">
+            <h2>Message Sent!</h2>
+            <p>Thank you for contacting us. We will get back to you soon.</p>
+            <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
+        </div>
+    {% else %}
+        <div class="contact-container">
+            <h1>Contact Us</h1>
+            <form method="POST" action="{{ url_for('contact') }}">
+                <input type="text" name="name" placeholder="Your Name" 
+                       value="{{ user.name if user else '' }}" required>
+                <input type="email" name="email" placeholder="Your Email" 
+                       value="{{ user.email if user else '' }}" required>
+                <input type="text" name="contact" placeholder="Contact No (optional)" 
+                       value="{{ user.contact if user else '' }}">
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <a href="{{ url_for('home') }}" class="back-btn">Back to Home</a>
+        </div>
+    {% endif %}
+</body>
+</html>

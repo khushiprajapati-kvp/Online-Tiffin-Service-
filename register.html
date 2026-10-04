@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTS - Register</title>
+
+<style>
+
+html, body{
+height:100%;
+margin:0;
+padding:0;
+}
+
+*{
+box-sizing:border-box;
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+/* 🔥 NO SCROLL + CENTER */
+body{
+background: linear-gradient(to right, #1e1e2f, #2c2c54);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+/* 🔥 COMPACT FORM */
+.container{
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(12px);
+padding: 20px;
+border-radius: 15px;
+width: 400px;
+max-width: 90%;
+box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+color:white;
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
+color:#ff7a18;
+}
+
+/* SUCCESS */
+.success-msg{
+background:#28a745;
+padding:8px;
+border-radius:8px;
+text-align:center;
+margin-bottom:10px;
+font-size:14px;
+}
+
+label{
+display:block;
+margin-bottom:3px;
+color:#ddd;
+font-size:13px;
+}
+
+/* 🔥 SMALL INPUT */
+input{
+width:100%;
+padding:8px;
+margin-bottom:8px;
+border:none;
+border-radius:8px;
+background: rgba(255,255,255,0.2);
+color:white;
+outline:none;
+font-size:13px;
+}
+
+input::placeholder{
+color:#ccc;
+}
+
+/* SHOW PASSWORD */
+.show-pass{
+display:flex;
+align-items:center;
+gap:6px;
+margin-bottom:10px;
+font-size:13px;
+color:#ddd;
+}
+
+.show-pass input{
+width:auto;
+}
+
+/* ADDRESS GRID */
+.address-grid{
+display:grid;
+grid-template-columns: 1fr 1fr;
+gap:8px;
+}
+
+.full{
+grid-column: span 2;
+}
+
+/* BUTTON */
+button{
+width:100%;
+padding:10px;
+background: linear-gradient(45deg, #ff7a18, #ffb347);
+color:white;
+border:none;
+border-radius:25px;
+font-size:14px;
+cursor:pointer;
+}
+
+/* LOGIN LINK */
+.login-link{
+margin-top:10px;
+text-align:center;
+font-size:13px;
+color:#ccc;
+}
+
+.login-link a{
+color:#ffb347;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Register</h2>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="success-msg">
+{{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<form method="POST">
+
+<label>Name</label>
+<input type="text" name="name" required>
+
+<label>Email</label>
+<input type="email" name="email" required>
+
+<label>Password</label>
+<input type="password" id="password" name="password" required>
+
+<div class="show-pass">
+<input type="checkbox" onclick="togglePassword()"> Show Password
+</div>
+
+<label>Contact</label>
+<input type="text" name="contact" required>
+
+<div class="address-grid">
+
+<div>
+<label>House No</label>
+<input type="text" name="house_no" required>
+</div>
+
+<div>
+<label>Street</label>
+<input type="text" name="street" required>
+</div>
+
+<div class="full">
+<label>Area</label>
+<input type="text" name="area" required>
+</div>
+
+<div>
+<label>City</label>
+<input type="text" name="city" required>
+</div>
+
+<div>
+<label>Pincode</label>
+<input type="text" name="pincode" required>
+</div>
+
+</div>
+
+<button type="submit">Register</button>
+
+</form>
+
+<div class="login-link">
+Already have an account? 
+<a href="{{ url_for('login') }}">Login here</a>
+</div>
+
+</div>
+
+<script>
+function togglePassword(){
+let x = document.getElementById("password");
+x.type = (x.type === "password") ? "text" : "password";
+}
+</script>
+
+</body>
+</html>

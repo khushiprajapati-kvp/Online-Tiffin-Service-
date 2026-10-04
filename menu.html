@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu - OTS</title>
+
+    <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(to right, #1e1e2f, #2c2c54);
+        min-height: 100vh;
+        color: white;
+    }
+
+    .container {
+        width: 85%;
+        margin: 50px auto;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    /* Heading + Back Button Container */
+    .heading-container{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        position: relative;
+        margin-bottom:20px;
+    }
+
+    h1 {
+        color: #ff7a18;
+        text-align: center;
+        flex:1;
+    }
+
+    .back-home-btn{
+        position: absolute;
+        right:0;
+        background: linear-gradient(45deg, #ff7a18, #ffb347);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .back-home-btn:hover{
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+    .search-box {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .search-box input {
+        width: 50%;
+        padding: 10px 15px;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+
+    #noResult {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffb347;
+        display: none;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+        gap: 25px;
+        justify-content: center;
+    }
+
+    .menu-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        overflow: hidden;
+        width: 220px;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .menu-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 10px;
+    }
+
+    .menu-card h3 {
+        margin: 15px 0 5px;
+    }
+
+    .price {
+        color: #ffb347;
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .rating {
+        margin-bottom: 10px;
+    }
+
+    .star {
+        font-size: 18px;
+        color: #ccc;
+    }
+
+    .star.filled {
+        color: #ffb347;
+    }
+
+    .qty-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .qty-box button {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ff7a18, #ffb347);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .qty-box input {
+        width: 50px;
+        text-align: center;
+        border-radius: 8px;
+        border: none;
+        padding: 5px;
+        font-weight: bold;
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        background: linear-gradient(45deg, #ff7a18, #ffb347);
+        color: white;
+        border-radius: 20px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .desc {
+        font-size: 13px;
+        color: #ddd;
+        margin: 5px 0 10px;
+        height: 40px;
+        overflow: hidden;
+    }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <!-- Heading + Back button -->
+    <div class="heading-container">
+        <h1>Our Menu</h1>
+        <a href="{{ url_for('home') }}" class="back-home-btn">Back to Home</a>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search food..." onkeyup="searchMenu()">
+    </div>
+<br>
+    <p id="noResult">😕 No items found</p>
+
+    <div class="menu-grid">
+        {% for item in items %}
+        <div class="menu-card" data-name="{{ item.name }}" data-desc="{{ item.description }}">
+
+            {% if item.image %}
+                <img src="{{ url_for('static', filename='gallery/' + item.image) }}">
+            {% else %}
+                <img src="https://via.placeholder.com/150">
+            {% endif %}
+
+            <h3>{{ item.name }}</h3>
+            <p class="desc">{{ item.description }}</p>
+            <p class="price">₹{{ item.price }}</p>
+
+            <div class="rating">
+                {% for i in range(1,6) %}
+                    {% if i <= item.rating %}
+                        <span class="star filled">★</span>
+                    {% else %}
+                        <span class="star">☆</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if 'user_id' in session %}
+                <form action="{{ url_for('book') }}" method="POST">
+                    <input type="hidden" name="menu_id" value="{{ item.id }}">
+                    <div class="qty-box">
+                        <button type="button" onclick="decreaseQty(this)">−</button>
+                        <input type="number" name="quantity" value="1" min="1" readonly>
+                        <button type="button" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button type="submit" class="btn">Book Now</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn">Login to Book</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function increaseQty(btn){
+    let input = btn.parentElement.querySelector("input");
+    input.value = parseInt(input.value) + 1;
+}
+
+function decreaseQty(btn){
+    let input = btn.parentElement.querySelector("input");
+    if(input.value > 1){
+        input.value = parseInt(input.value) - 1;
+    }
+}
+
+function searchMenu() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".menu-card");
+    let found = false;
+
+    cards.forEach(card => {
+        let name = card.getAttribute("data-name").toLowerCase();
+        let desc = card.getAttribute("data-desc").toLowerCase();
+
+        if (name.includes(input) || desc.includes(input)) {
+            card.style.display = "";
+            found = true;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    let noResult = document.getElementById("noResult");
+    if(found){
+        noResult.style.display = "none";
+    } else {
+        noResult.style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>

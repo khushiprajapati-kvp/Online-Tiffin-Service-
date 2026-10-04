@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Orders - Admin</title>
+    <style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.container {
+    width: 90%;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color:#333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    background: #ff6b00;
+    color: white;
+    padding: 12px;
+}
+
+table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    color:#333;
+}
+
+table tr:hover {
+    background: #f9f9f9;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    margin: 3px;
+    transition: 0.2s;
+}
+
+.accept {
+    background: #28a745;
+}
+
+.reject {
+    background: #dc3545;
+}
+
+.update {
+    background: #007bff;
+}
+
+.btn:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1e1e1e;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.back-btn:hover {
+    background: #000;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.status-text {
+    font-weight: bold;
+}
+
+/* DELIVERY BADGE */
+.delivery-badge {
+    background: #e6f4ea;
+    color: #155724;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 13px;
+}
+
+/* 🔥 GRID CONTAINER */
+.staff-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+    gap: 6px;
+}
+
+/* STAFF BUTTON */
+.staff-btn {
+    width: 100%;
+    background: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.staff-btn:hover {
+    background: #28a745;
+    color: white;
+    transform: scale(1.05);
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>All Orders</h2>
+        <a href="/admin_dashboard" class="back-btn">Back to Dashboard</a>
+    </div>
+
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Email</th>
+        <th>Dish</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Assign Delivery</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user_name }}</td>
+        <td>{{ order.email }}</td>
+        <td>{{ order.dish }}</td>
+        <td>₹{{ order.price }}</td>
+        <td>{{ order.quantity }}</td>
+
+        <!-- STATUS -->
+        <td>
+
+{% if order.status == 'Delivered' %}
+    <span class="status-text" style="color:green;">✔ Completed</span>
+
+{% elif order.status == 'Rejected' %}
+    <span class="status-text" style="color:red;">❌ Rejected</span>
+
+{% else %}
+    <form method="POST" action="/update_status/{{ order.id }}">
+
+        {% if order.status == 'Pending' %}
+            <button name="status" value="Accepted" class="btn accept">Accept</button>
+            <button name="status" value="Rejected" class="btn reject">Reject</button>
+
+        {% elif order.status == 'Accepted' %}
+            <button name="status" value="Out for Delivery" class="btn update">
+                🚚 Out for Delivery
+            </button>
+
+        {% elif order.status == 'Out for Delivery' %}
+            <button name="status" value="Delivered" class="btn accept">
+                ✔ Mark Delivered
+            </button>
+        {% endif %}
+
+    </form>
+{% endif %}
+
+        </td>
+
+        <!-- ASSIGN DELIVERY -->
+        <td>
+
+{% if order.delivery_name %}
+    <span class="delivery-badge">
+        🚚 {{ order.delivery_name }}
+    </span>
+
+{% elif order.status == 'Delivered' or order.status == 'Rejected' %}
+    <span style="color:gray;">Not Allowed</span>
+
+{% else %}
+    
+    <!-- 🔥 2x2 GRID BUTTONS -->
+    <div class="staff-container">
+
+        {% for boy in delivery_boys %}
+            <form method="POST" action="/assign_delivery/{{ order.id }}">
+                
+                <input type="hidden" name="delivery_boy_id" value="{{ boy.id }}">
+                
+                <button type="submit" class="staff-btn">
+                    🚚 {{ boy.name }}
+                </button>
+
+            </form>
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+</div>
+
+</body>
+</html>

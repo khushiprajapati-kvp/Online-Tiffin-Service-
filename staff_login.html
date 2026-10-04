@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delivery Staff Login</title>
+
+<style>
+
+/* Reset */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Background */
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+}
+
+/* Login Box */
+.box{
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    padding:40px;
+    border-radius:15px;
+    width:350px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Heading */
+h2{
+    color:#ff7a18;
+    margin-bottom:15px;
+}
+
+/* 🔥 FLASH MESSAGE */
+.flash{
+    color:#ff4d4d;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+/* Input */
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:25px;
+    outline:none;
+    background:rgba(255,255,255,0.2);
+    color:white;
+    font-size:14px;
+}
+
+/* Placeholder */
+input::placeholder{
+    color:#ddd;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:25px;
+    background: linear-gradient(45deg, #ff7a18, #ffb347);
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    opacity:0.9;
+}
+
+/* Optional back link */
+.back{
+    display:block;
+    margin-top:15px;
+    color:#ccc;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.back:hover{
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>🚚 Delivery Login</h2>
+
+<!-- 🔥 FLASH MESSAGE SHOW -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<form method="POST">
+    <input type="email" name="email" placeholder="Enter Email" required>
+    <button type="submit">Login</button>
+</form>
+
+
+
+</div>
+
+</body>
+</html>

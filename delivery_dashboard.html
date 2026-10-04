@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delivery Dashboard</title>
+
+<style>
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #1f4037, #99f2c8);
+}
+
+.navbar{
+    background:#111;
+    color:white;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+    padding:8px 14px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.container{
+    width:90%;
+    margin:40px auto;
+    background:#ffffff;
+    padding:25px;
+    border-radius:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#28a745;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+}
+
+/* MAP BUTTON */
+.map-btn{
+    background:#007bff;
+    color:white;
+    padding:6px 10px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+/* CALL BUTTON */
+.call-btn{
+    background:#28a745;
+    color:white;
+    padding:6px 10px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:13px;
+    display:inline-block;
+    margin-top:5px;
+}
+
+.update-btn{
+    background:#ffc107;
+    color:black;
+    padding:6px 10px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.map-btn:hover{
+    background:#0056b3;
+}
+
+.call-btn:hover{
+    background:#1e7e34;
+}
+
+.update-btn:hover{
+    background:#e0a800;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <h3>🚚 Delivery Panel</h3>
+    <div>
+        <span>Welcome, {{ session['staff_name'] }}</span>
+        <a href="/staff_logout" class="logout-btn">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+<h2>My Deliveries</h2>
+
+<table>
+<tr>
+    <th>User</th>
+    <th>Dish</th>
+    <th>Price</th>
+    <th>Total</th>
+    <th>Contact</th>
+    <th>Address</th>
+    <th>Map</th>
+    <th>Status</th>
+    <th>Update</th>
+</tr>
+
+{% for order in orders %}
+<tr>
+    <td>{{ order.user_name }}</td>
+    <td>{{ order.dish }}</td>
+    <td>₹ {{ order.price }}</td>
+    <td>₹ {{ order.price * order.quantity }}</td>
+
+    <!-- Contact + Call -->
+    <td>
+        {{ order.contact }} <br>
+        {% if order.status != 'Delivered' %}
+            <a href="tel:{{ order.contact }}" class="call-btn">📞 Call</a>
+        {% endif %}
+    </td>
+
+    <td>{{ order.address }}</td>
+
+    <!-- Map -->
+    <td>
+        <a class="map-btn"
+           href="https://www.google.com/maps/search/?api=1&query={{ order.address | replace(' ', '+') }}"
+           target="_blank">
+           📍 Map
+        </a>
+    </td>
+
+    <!-- Status -->
+    <td>
+    {% if order.status == 'Out for Delivery' %}
+        <span style="color:#ffc107;">🚚 Out</span>
+    {% elif order.status == 'Delivered' %}
+        <span style="color:#28a745;">✅ Delivered</span>
+    {% else %}
+        {{ order.status }}
+    {% endif %}
+    </td>
+
+    <!-- Update -->
+    <td>
+    {% if order.status == 'Delivered' %}
+        <span style="color:gray;">✔ Completed</span>
+    {% else %}
+        <form method="POST" action="/update_status/{{ order.id }}">
+            <button type="submit" name="status" value="Delivered" class="update-btn">Mark as Delivered</button>
+        </form>
+    {% endif %}
+    </td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>
